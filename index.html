@@ -1,0 +1,885 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LeamsiTUNER Pro - Afinador de Guitarra Profesional</title>
+  
+  <!-- Typography Import -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #130a21;
+      --card-bg: rgba(28, 16, 48, 0.75);
+      --card-border: rgba(176, 38, 255, 0.2);
+      --accent-cyan: #00f0ff;
+      --accent-green: #00ff88;
+      --accent-red: #ff0055;
+      --accent-yellow: #ffb700;
+      --accent-purple: #b026ff;
+      --text-main: #f0f4f8;
+      --text-muted: #8b80b2;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(176, 38, 255, 0.22) 0%, transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(0, 240, 255, 0.12) 0%, transparent 60%);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0.8rem;
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* SPLASH SCREEN STYLING */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      background-color: #0b0517;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-logo-wrapper {
+      position: relative;
+      width: 230px;
+      height: 230px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader-ring-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .loader-bg-circle {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.04);
+      stroke-width: 8;
+    }
+
+    .loader-progress-circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 628; /* 2 * PI * 100 */
+      stroke-dashoffset: 628;
+      transition: stroke 0.2s linear;
+    }
+
+    .splash-logo-inner {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+      z-index: 2;
+    }
+
+    .splash-logo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand-reveal-text {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-top: 2rem;
+      background: linear-gradient(90deg, #ffffff, var(--accent-cyan), var(--accent-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      text-shadow: 0 0 25px rgba(176, 38, 255, 0.6);
+    }
+
+    .brand-reveal-text.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .loading-percent {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.8rem;
+      letter-spacing: 2px;
+    }
+
+    /* APP HEADER */
+    header {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.2rem;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 15px rgba(176, 38, 255, 0.5);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .signal-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-display);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--text-muted);
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .status-dot.active {
+      background-color: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* TUNING PRESET SELECTOR BAR */
+    .preset-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 8px 12px;
+    }
+
+    .preset-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .preset-select {
+      background: rgba(19, 10, 33, 0.9);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* GAUGE CARD & CANVAS */
+    .gauge-card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 1.8rem 1rem 1.4rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+
+    .gauge-card.tuned {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.25), inset 0 0 15px rgba(0, 255, 136, 0.1);
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1.35;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .note-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: -10px;
+      z-index: 2;
+    }
+
+    .note-name {
+      font-family: var(--font-display);
+      font-size: 4.2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text-main);
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    .note-name.tuned {
+      color: var(--accent-green);
+      text-shadow: 0 0 25px rgba(0, 255, 136, 0.8);
+    }
+
+    .freq-display {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    .success-badge {
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 240, 255, 0.2));
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+      transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin-top: 1rem;
+      pointer-events: none;
+    }
+
+    .success-badge.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* SPECTRUM VISUALIZER */
+    .visualizer-card {
+      width: 100%;
+      height: 48px;
+      background: rgba(13, 6, 26, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #spectrumCanvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ACTION CONTROLS */
+    .controls {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-mic {
+      width: 100%;
+      max-width: 300px;
+      padding: 1.1rem 2rem;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(176, 38, 255, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-mic:active {
+      transform: scale(0.97);
+      box-shadow: 0 5px 15px rgba(176, 38, 255, 0.2);
+    }
+
+    .btn-mic.listening {
+      background: rgba(255, 0, 85, 0.15);
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+      box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+    }
+
+    .btn-mic svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    footer {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.4rem 0;
+    }
+
+    @media (max-height: 670px) {
+      .gauge-card { padding: 1.2rem 1rem 1rem 1rem; }
+      .note-name { font-size: 3.5rem; }
+      .canvas-wrapper { max-width: 250px; }
+      .splash-logo-wrapper { width: 180px; height: 180px; }
+      .splash-logo-inner { width: 140px; height: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH SCREEN DE CARGA -->
+  <div id="splash-screen">
+    <div class="splash-logo-wrapper">
+      <svg class="loader-ring-svg" viewBox="0 0 220 220">
+        <circle class="loader-bg-circle" cx="110" cy="110" r="100"></circle>
+        <circle class="loader-progress-circle" id="loaderCircle" cx="110" cy="110" r="100"></circle>
+      </svg>
+
+      <div class="splash-logo-inner">
+        <img id="logoImgSplash" src="https://i.postimg.cc/wBbdwN19/0f59ff27-8a9f-4c1a-a4c8-7de3e1344b79.jpg" alt="Leamsirec Logo">
+      </div>
+    </div>
+
+    <div class="brand-reveal-text" id="brandRevealText">LeamsiTUNER</div>
+    <div class="loading-percent" id="loadingPercent">CARGANDO... 0%</div>
+  </div>
+
+  <!-- HEADER DE LA APP -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">
+        <img id="logoImgHeader" src="https://i.postimg.cc/wBbdwN19/0f59ff27-8a9f-4c1a-a4c8-7de3e1344b79.jpg" alt="Leamsirec Logo">
+      </div>
+      <span class="brand-title">LeamsiTUNER</span>
+    </div>
+    <div class="signal-status">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">LISTO</span>
+    </div>
+  </header>
+
+  <!-- INTERFAZ PRINCIPAL DEL AFINADOR -->
+  <main>
+    <!-- SELECTOR DE AFINACIONES -->
+    <div class="preset-bar">
+      <span class="preset-label">AFINACIÓN:</span>
+      <select class="preset-select" id="presetSelect">
+        <option value="STD">Estándar (E A D G B E)</option>
+        <option value="DROPD">Drop D (D A D G B E)</option>
+        <option value="HALF">Medio Tono Abajo (Eb Ab Db Gb Bb Eb)</option>
+        <option value="FULL">Tono Completo Abajo (D G C F A D)</option>
+      </select>
+    </div>
+
+    <!-- TARJETA DEL MEDIDOR -->
+    <div class="gauge-card" id="gaugeCard">
+      <div class="canvas-wrapper">
+        <canvas id="gaugeCanvas" width="600" height="420"></canvas>
+      </div>
+
+      <div class="note-container">
+        <div class="note-name" id="noteDisplay">--</div>
+        <div class="freq-display" id="freqDisplay">0.0 Hz</div>
+      </div>
+
+      <div class="success-badge" id="successBadge">
+        AFINACIÓN CON ÉXITO
+      </div>
+    </div>
+
+    <!-- ESPECTROGRAMA EN TIEMPO REAL -->
+    <div class="visualizer-card">
+      <canvas id="spectrumCanvas" width="500" height="80"></canvas>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="controls">
+      <button class="btn-mic" id="micBtn">
+        <svg id="micIcon" viewBox="0 0 24 24">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+        </svg>
+        <span id="btnText">INICIAR AFINADOR</span>
+      </button>
+    </div>
+  </main>
+
+  <footer>
+    LeamsiTUNER Pro • Sensibilidad de Alta Precisión • A4 = 440Hz
+  </footer>
+
+  <script>
+    // 10 Colores Sólidos para la barra de carga circular
+    const solidColors = [
+      '#FF0055', '#00F0FF', '#00FF88', '#FFB700', '#B026FF',
+      '#FF5722', '#0077FF', '#E91E63', '#7C4DFF', '#00E676'
+    ];
+
+    // Bucle de animación para la pantalla de carga (Splash Loader)
+    const loaderCircle = document.getElementById('loaderCircle');
+    const loadingPercent = document.getElementById('loadingPercent');
+    const brandRevealText = document.getElementById('brandRevealText');
+    const splashScreen = document.getElementById('splash-screen');
+
+    let progress = 0;
+    const totalLength = 628;
+
+    function runSplashLoader() {
+      const interval = setInterval(() => {
+        progress += 2;
+        
+        const offset = totalLength - (progress / 100) * totalLength;
+        loaderCircle.style.strokeDashoffset = offset;
+
+        const colorIndex = Math.floor((progress / 10)) % solidColors.length;
+        loaderCircle.style.stroke = solidColors[colorIndex];
+        loaderCircle.style.filter = `drop-shadow(0 0 10px ${solidColors[colorIndex]})`;
+
+        loadingPercent.innerText = `CARGANDO... ${progress}%`;
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          loadingPercent.style.display = 'none';
+          brandRevealText.classList.add('show');
+
+          setTimeout(() => {
+            splashScreen.classList.add('hidden');
+          }, 1800);
+        }
+      }, 50);
+    }
+
+    window.addEventListener('DOMContentLoaded', runSplashLoader);
+
+    // Motor de Audio y Lógica del Afinador
+    const micBtn = document.getElementById('micBtn');
+    const btnText = document.getElementById('btnText');
+    const noteDisplay = document.getElementById('noteDisplay');
+    const freqDisplay = document.getElementById('freqDisplay');
+    const successBadge = document.getElementById('successBadge');
+    const gaugeCard = document.getElementById('gaugeCard');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    
+    const canvas = document.getElementById('gaugeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const spectrumCanvas = document.getElementById('spectrumCanvas');
+    const specCtx = spectrumCanvas.getContext('2d');
+
+    let audioCtx = null;
+    let analyser = null;
+    let micStream = null;
+    let isListening = false;
+    let animationFrameId = null;
+
+    const A4 = 440;
+    const NOTE_STRINGS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    
+    let currentCents = 0;
+    let targetCents = 0;
+
+    function setupCanvasDPI() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const sRect = spectrumCanvas.getBoundingClientRect();
+      spectrumCanvas.width = sRect.width * dpr;
+      spectrumCanvas.height = sRect.height * dpr;
+      specCtx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', setupCanvasDPI);
+    setupCanvasDPI();
+
+    // Dibujado del dial con aguja
+    function drawGauge(cents) {
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const centerX = width / 2;
+      const centerY = height * 0.82;
+      const radius = Math.min(width, height) * 0.72;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const startAngle = Math.PI * 0.8;
+      const endAngle = Math.PI * 2.2;
+
+      // Arco de fondo
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Zona central de afinación justa (Verde)
+      const tunedWidth = 0.08;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, (Math.PI * 1.5) - tunedWidth, (Math.PI * 1.5) + tunedWidth);
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = '#00ff88';
+      ctx.shadowColor = '#00ff88';
+      ctx.shadowBlur = 12;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Marcas del reloj de afinación
+      const totalTicks = 21;
+      for (let i = 0; i < totalTicks; i++) {
+        const tickCents = -50 + (i * 5);
+        const angle = Math.PI * 1.5 + (tickCents * (Math.PI / 180) * 0.9);
+        const isMajor = i % 5 === 0;
+        const isCenter = tickCents === 0;
+
+        const innerR = radius - (isMajor ? 22 : 12);
+        const outerR = radius - 8;
+
+        const x1 = centerX + Math.cos(angle) * innerR;
+        const y1 = centerY + Math.sin(angle) * innerR;
+        const x2 = centerX + Math.cos(angle) * outerR;
+        const y2 = centerY + Math.sin(angle) * outerR;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth = isCenter ? 4 : (isMajor ? 2.5 : 1.5);
+        ctx.strokeStyle = isCenter ? '#00ff88' : (isMajor ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.15)');
+        ctx.stroke();
+      }
+
+      // Interpolación Suave de Aguja
+      currentCents += (targetCents - currentCents) * 0.15;
+      const clampedCents = Math.max(-50, Math.min(50, currentCents));
+      const needleAngle = Math.PI * 1.5 + (clampedCents * (Math.PI / 180) * 0.9);
+
+      let needleColor = '#00f0ff';
+      const absCents = Math.abs(currentCents);
+      if (isListening && noteDisplay.innerText !== '--') {
+        if (absCents <= 3) {
+          needleColor = '#00ff88';
+        } else if (absCents <= 15) {
+          needleColor = '#ffb700';
+        } else {
+          needleColor = '#ff0055';
+        }
+      } else {
+        needleColor = '#8b80b2';
+      }
+
+      ctx.shadowColor = needleColor;
+      ctx.shadowBlur = absCents <= 3 ? 20 : 10;
+
+      const needleLength = radius - 15;
+      const nx = centerX + Math.cos(needleAngle) * needleLength;
+      const ny = centerY + Math.sin(needleAngle) * needleLength;
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(nx, ny);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = needleColor;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+      ctx.fillStyle = needleColor;
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+    }
+
+    // Visualizador de ondas/espectro en tiempo real
+    function drawSpectrum(freqData) {
+      const sRect = spectrumCanvas.getBoundingClientRect();
+      const w = sRect.width;
+      const h = sRect.height;
+
+      specCtx.clearRect(0, 0, w, h);
+      if (!isListening || !freqData) return;
+
+      const barWidth = (w / 32);
+      for (let i = 0; i < 32; i++) {
+        const val = freqData[i * 2] / 255;
+        const barHeight = val * h;
+
+        specCtx.fillStyle = `rgba(176, 38, 255, ${val + 0.2})`;
+        specCtx.fillRect(i * barWidth, h - barHeight, barWidth - 2, barHeight);
+      }
+    }
+
+    // Algoritmo de Detección de Frecuencia (Autocorrelación YIN)
+    function autoCorrelate(buf, sampleRate) {
+      const SIZE = buf.length;
+      let rms = 0;
+
+      for (let i = 0; i < SIZE; i++) {
+        const val = buf[i];
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / SIZE);
+
+      if (rms < 0.012) return -1;
+
+      let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+      for (let i = 0; i < SIZE / 2; i++) {
+        if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+      }
+      for (let i = 1; i < SIZE / 2; i++) {
+        if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+      }
+
+      buf = buf.slice(r1, r2);
+      const c = new Array(buf.length).fill(0);
+
+      for (let i = 0; i < buf.length; i++) {
+        for (let j = 0; j < buf.length - i; j++) {
+          c[i] = c[i] + buf[j] * buf[j + i];
+        }
+      }
+
+      let d = 0;
+      while (c[d] > c[d + 1]) d++;
+
+      let maxval = -1, maxpos = -1;
+      for (let i = d; i < buf.length; i++) {
+        if (c[i] > maxval) {
+          maxval = c[i];
+          maxpos = i;
+        }
+      }
+
+      let T0 = maxpos;
+      const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+      const a = (x1 + x3 - 2 * x2) / 2;
+      const b = (x3 - x1) / 2;
+      if (a) T0 = T0 - b / (2 * a);
+
+      return sampleRate / T0;
+    }
+
+    function getNoteAndCents(freq) {
+      const noteNum = 12 * (Math.log(freq / A4) / Math.log(2));
+      const midiNote = Math.round(noteNum) + 69;
+      const noteName = NOTE_STRINGS[midiNote % 12];
+      const cents = Math.floor((noteNum - Math.round(noteNum)) * 100);
+      return { noteName, cents };
+    }
+
+    function processAudio() {
+      if (!isListening) return;
+
+      const buf = new Float32Array(2048);
+      analyser.getFloatTimeDomainData(buf);
+
+      const freqData = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(freqData);
+      drawSpectrum(freqData);
+
+      const pitch = autoCorrelate(buf, audioCtx.sampleRate);
+
+      if (pitch !== -1 && pitch >= 60 && pitch <= 1000) {
+        const { noteName, cents } = getNoteAndCents(pitch);
+        
+        noteDisplay.innerText = noteName;
+        freqDisplay.innerText = `${pitch.toFixed(1)} Hz`;
+        targetCents = cents;
+
+        if (Math.abs(cents) <= 3) {
+          noteDisplay.classList.add('tuned');
+          gaugeCard.classList.add('tuned');
+          successBadge.classList.add('show');
+
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
+        } else {
+          noteDisplay.classList.remove('tuned');
+          gaugeCard.classList.remove('tuned');
+          successBadge.classList.remove('show');
+        }
+
+      } else {
+        targetCents = 0;
+      }
+
+      drawGauge(currentCents);
+      animationFrameId = requestAnimationFrame(processAudio);
+    }
+
+    async function toggleMicrophone() {
+      if (isListening) {
+        isListening = false;
+        if (micStream) micStream.getTracks().forEach(track => track.stop());
+        if (audioCtx) audioCtx.close();
+        cancelAnimationFrame(animationFrameId);
+
+        micBtn.classList.remove('listening');
+        btnText.innerText = 'INICIAR AFINADOR';
+        statusDot.classList.remove('active');
+        statusText.innerText = 'PAUSADO';
+        noteDisplay.innerText = '--';
+        noteDisplay.classList.remove('tuned');
+        gaugeCard.classList.remove('tuned');
+        successBadge.classList.remove('show');
+        freqDisplay.innerText = '0.0 Hz';
+        targetCents = 0;
+        drawGauge(0);
+        drawSpectrum(null);
+
+      } else {
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: false,
+              noiseSuppression: false,
+              autoGainControl: false,
+              latency: 0
+            }
+          });
+
+          const source = audioCtx.createMediaStreamSource(micStream);
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 2048;
+          source.connect(analyser);
+
+          isListening = true;
+          micBtn.classList.add('listening');
+          btnText.innerText = 'DETENER AFINADOR';
+          statusDot.classList.add('active');
+          statusText.innerText = 'ESCUCHANDO';
+
+          processAudio();
+
+        } catch (err) {
+          alert('Error al acceder al micrófono. Por favor, concede permisos en tu navegador.');
+          console.error(err);
+        }
+      }
+    }
+
+    micBtn.addEventListener('click', toggleMicrophone);
+    drawGauge(0);
+  </script>
+</body>
+</html>
