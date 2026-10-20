@@ -1,11 +1,11 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>LeamsiTUNER Pro - Afinador de Guitarra Profesional</title>
+  <title>LeamsiTUNER Ultra Studio Deluxe Pro - Afinador de Guitarra</title>
   
-  <!-- Typography Import -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -13,13 +13,15 @@
   <style>
     :root {
       --bg-dark: #130a21;
-      --card-bg: rgba(28, 16, 48, 0.75);
-      --card-border: rgba(176, 38, 255, 0.2);
+      --card-bg: rgba(28, 16, 48, 0.85);
+      --card-border: rgba(176, 38, 255, 0.25);
       --accent-cyan: #00f0ff;
       --accent-green: #00ff88;
       --accent-red: #ff0055;
       --accent-yellow: #ffb700;
       --accent-purple: #b026ff;
+      --accent-orange: #ff5722;
+      --accent-blue: #0077ff;
       --text-main: #f0f4f8;
       --text-muted: #8b80b2;
       --font-display: 'Orbitron', sans-serif;
@@ -38,7 +40,7 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(176, 38, 255, 0.22) 0%, transparent 60%),
+        radial-gradient(circle at 50% 0%, rgba(176, 38, 255, 0.25) 0%, transparent 60%),
         radial-gradient(circle at 50% 100%, rgba(0, 240, 255, 0.12) 0%, transparent 60%);
       color: var(--text-main);
       font-family: var(--font-body);
@@ -74,8 +76,8 @@
 
     .splash-logo-wrapper {
       position: relative;
-      width: 230px;
-      height: 230px;
+      width: 220px;
+      height: 220px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -100,14 +102,14 @@
       fill: none;
       stroke-width: 8;
       stroke-linecap: round;
-      stroke-dasharray: 628; /* 2 * PI * 100 */
+      stroke-dasharray: 628;
       stroke-dashoffset: 628;
       transition: stroke 0.2s linear;
     }
 
     .splash-logo-inner {
-      width: 180px;
-      height: 180px;
+      width: 176px;
+      height: 176px;
       border-radius: 50%;
       overflow: hidden;
       background: #000;
@@ -153,7 +155,7 @@
       letter-spacing: 2px;
     }
 
-    /* APP HEADER */
+    /* HEADER */
     header {
       width: 100%;
       max-width: 480px;
@@ -229,44 +231,75 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.2rem;
+      gap: 0.9rem;
       flex: 1;
       justify-content: center;
     }
 
-    /* TUNING PRESET SELECTOR BAR */
-    .preset-bar {
+    /* CONFIGURATION & CALIBRATION BAR */
+    .config-bar {
       width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
-    .preset-label {
-      font-size: 0.75rem;
+    .config-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .config-title {
+      font-size: 0.65rem;
       color: var(--text-muted);
       font-family: var(--font-display);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .preset-select {
+    .config-select {
       background: rgba(19, 10, 33, 0.9);
       color: var(--accent-cyan);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      padding: 6px 12px;
-      border-radius: 10px;
+      border: none;
       font-family: var(--font-display);
       font-size: 0.8rem;
       outline: none;
       cursor: pointer;
+      width: 100%;
+      margin-top: 2px;
     }
 
-    /* GAUGE CARD & CANVAS */
+    .a4-calibration-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .btn-a4 {
+      background: rgba(176, 38, 255, 0.2);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-main);
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .a4-value {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--accent-green);
+    }
+
+    /* GAUGE CARD */
     .gauge-card {
       width: 100%;
       background: var(--card-bg);
@@ -274,7 +307,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 28px;
-      padding: 1.8rem 1rem 1.4rem 1rem;
+      padding: 1.4rem 1rem 1rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -291,7 +324,7 @@
     .canvas-wrapper {
       position: relative;
       width: 100%;
-      max-width: 320px;
+      max-width: 310px;
       aspect-ratio: 1.35;
       display: flex;
       justify-content: center;
@@ -304,17 +337,47 @@
       display: block;
     }
 
+    .tuning-direction-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 2rem;
+      margin-top: -15px;
+      z-index: 3;
+    }
+
+    .arrow-indicator {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--text-muted);
+      opacity: 0.3;
+      transition: color 0.3s, opacity 0.3s;
+    }
+
+    .arrow-indicator.active-low {
+      color: var(--accent-red);
+      opacity: 1;
+      text-shadow: 0 0 10px var(--accent-red);
+    }
+
+    .arrow-indicator.active-high {
+      color: var(--accent-yellow);
+      opacity: 1;
+      text-shadow: 0 0 10px var(--accent-yellow);
+    }
+
     .note-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: -10px;
       z-index: 2;
     }
 
     .note-name {
       font-family: var(--font-display);
-      font-size: 4.2rem;
+      font-size: 4rem;
       font-weight: 900;
       line-height: 1;
       color: var(--text-main);
@@ -335,22 +398,29 @@
       letter-spacing: 1px;
     }
 
+    .cents-display {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      margin-top: 2px;
+    }
+
     .success-badge {
       opacity: 0;
       transform: translateY(10px) scale(0.9);
       background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 240, 255, 0.2));
       border: 1px solid var(--accent-green);
       color: var(--accent-green);
-      padding: 8px 20px;
+      padding: 6px 18px;
       border-radius: 30px;
       font-family: var(--font-display);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 800;
       letter-spacing: 2px;
       text-transform: uppercase;
       box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
       transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      margin-top: 1rem;
+      margin-top: 0.6rem;
       pointer-events: none;
     }
 
@@ -359,83 +429,123 @@
       transform: translateY(0) scale(1);
     }
 
-    /* SPECTRUM VISUALIZER */
-    .visualizer-card {
+    /* STRINGS BAR WITH SOLID INDIVIDUAL COLORS */
+    .strings-bar {
       width: 100%;
-      height: 48px;
-      background: rgba(13, 6, 26, 0.6);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .btn-string {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 12px;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s;
+      opacity: 0.85;
+    }
+
+    .btn-string:active, .btn-string.active {
+      opacity: 1;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px currentColor;
+    }
+
+    .btn-string:nth-child(1) { background-color: #ff0055; }
+    .btn-string:nth-child(2) { background-color: #ff6d00; }
+    .btn-string:nth-child(3) { background-color: #ffb700; }
+    .btn-string:nth-child(4) { background-color: #00ff88; color: #000; }
+    .btn-string:nth-child(5) { background-color: #00f0ff; color: #000; }
+    .btn-string:nth-child(6) { background-color: #b026ff; }
+
+    /* REAL-TIME VISUALIZERS */
+    .vis-container {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .vis-card {
+      height: 44px;
+      background: rgba(13, 6, 26, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 14px;
       overflow: hidden;
-      position: relative;
     }
 
-    #spectrumCanvas {
+    .vis-card canvas {
       width: 100%;
       height: 100%;
     }
 
-    /* ACTION CONTROLS */
-    .controls {
+    /* ACTION BUTTONS GRID */
+    .action-grid {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
 
-    .btn-mic {
-      width: 100%;
-      max-width: 300px;
-      padding: 1.1rem 2rem;
-      border-radius: 50px;
+    .btn-action {
+      padding: 0.85rem 1rem;
+      border-radius: 16px;
       border: none;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-      color: #fff;
       font-family: var(--font-display);
-      font-size: 0.95rem;
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 10px 25px rgba(176, 38, 255, 0.4);
+      gap: 8px;
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
       transition: all 0.2s ease;
     }
 
-    .btn-mic:active {
-      transform: scale(0.97);
-      box-shadow: 0 5px 15px rgba(176, 38, 255, 0.2);
+    .btn-action:active {
+      transform: scale(0.96);
     }
 
-    .btn-mic.listening {
-      background: rgba(255, 0, 85, 0.15);
-      border: 1px solid var(--accent-red);
-      color: var(--accent-red);
-      box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+    .btn-mic-main {
+      grid-column: span 2;
+      background-color: #00c853;
+      color: #000;
+      font-size: 0.9rem;
+      padding: 1rem;
+    }
+    .btn-mic-main.listening {
+      background-color: #ff1744;
+      color: #fff;
     }
 
-    .btn-mic svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
+    .btn-mode { background-color: #2979ff; }
+    .btn-tone { background-color: #ff6d00; }
+    .btn-wave { background-color: #7c4dff; }
+    .btn-gate { background-color: #00b0ff; }
 
     footer {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       text-align: center;
-      padding: 0.4rem 0;
+      padding: 0.3rem 0;
     }
 
     @media (max-height: 670px) {
-      .gauge-card { padding: 1.2rem 1rem 1rem 1rem; }
-      .note-name { font-size: 3.5rem; }
-      .canvas-wrapper { max-width: 250px; }
-      .splash-logo-wrapper { width: 180px; height: 180px; }
-      .splash-logo-inner { width: 140px; height: 140px; }
+      .gauge-card { padding: 1rem 1rem 0.8rem 1rem; }
+      .note-name { font-size: 3.2rem; }
+      .canvas-wrapper { max-width: 220px; }
+      .splash-logo-wrapper { width: 170px; height: 170px; }
+      .splash-logo-inner { width: 130px; height: 130px; }
     }
   </style>
 </head>
@@ -458,7 +568,7 @@
     <div class="loading-percent" id="loadingPercent">CARGANDO... 0%</div>
   </div>
 
-  <!-- HEADER DE LA APP -->
+  <!-- HEADER -->
   <header>
     <div class="brand">
       <div class="brand-logo">
@@ -472,28 +582,45 @@
     </div>
   </header>
 
-  <!-- INTERFAZ PRINCIPAL DEL AFINADOR -->
+  <!-- MAIN TUNER LAYOUT -->
   <main>
-    <!-- SELECTOR DE AFINACIONES -->
-    <div class="preset-bar">
-      <span class="preset-label">AFINACIÓN:</span>
-      <select class="preset-select" id="presetSelect">
-        <option value="STD">Estándar (E A D G B E)</option>
-        <option value="DROPD">Drop D (D A D G B E)</option>
-        <option value="HALF">Medio Tono Abajo (Eb Ab Db Gb Bb Eb)</option>
-        <option value="FULL">Tono Completo Abajo (D G C F A D)</option>
-      </select>
+    <!-- CONFIGURACIÓN: AFINACIÓN + CALIBRACIÓN A4 -->
+    <div class="config-bar">
+      <div class="config-box">
+        <span class="config-title">PRESET DE AFINACIÓN</span>
+        <select class="config-select" id="presetSelect">
+          <option value="STD">Estándar (E A D G B E)</option>
+          <option value="DROPD">Drop D (D A D G B E)</option>
+          <option value="HALF">Medio Tono Abajo</option>
+          <option value="FULL">Tono Completo Abajo</option>
+        </select>
+      </div>
+
+      <div class="config-box">
+        <span class="config-title">CALIBRACIÓN A4</span>
+        <div class="a4-calibration-wrap">
+          <button class="btn-a4" id="btnA4Down">-</button>
+          <span class="a4-value" id="a4ValueDisplay">440 Hz</span>
+          <button class="btn-a4" id="btnA4Up">+</button>
+        </div>
+      </div>
     </div>
 
-    <!-- TARJETA DEL MEDIDOR -->
+    <!-- TARJETA DEL MEDIDOR PRINCIPAL -->
     <div class="gauge-card" id="gaugeCard">
       <div class="canvas-wrapper">
         <canvas id="gaugeCanvas" width="600" height="420"></canvas>
       </div>
 
+      <div class="tuning-direction-indicator">
+        <span class="arrow-indicator" id="arrowLow">◄ TENSAR</span>
+        <span class="arrow-indicator" id="arrowHigh">AFLOJAR ►</span>
+      </div>
+
       <div class="note-container">
         <div class="note-name" id="noteDisplay">--</div>
         <div class="freq-display" id="freqDisplay">0.0 Hz</div>
+        <div class="cents-display" id="centsDisplay">0 Cents</div>
       </div>
 
       <div class="success-badge" id="successBadge">
@@ -501,35 +628,56 @@
       </div>
     </div>
 
-    <!-- ESPECTROGRAMA EN TIEMPO REAL -->
-    <div class="visualizer-card">
-      <canvas id="spectrumCanvas" width="500" height="80"></canvas>
+    <!-- CUERDAS CON COLORES SÓLIDOS -->
+    <div class="strings-bar">
+      <button class="btn-string" data-note="E2" data-freq="82.41">6E</button>
+      <button class="btn-string" data-note="A2" data-freq="110.00">5A</button>
+      <button class="btn-string" data-note="D3" data-freq="146.83">4D</button>
+      <button class="btn-string" data-note="G3" data-freq="196.00">3G</button>
+      <button class="btn-string" data-note="B3" data-freq="246.94">2B</button>
+      <button class="btn-string" data-note="E4" data-freq="329.63">1E</button>
     </div>
 
-    <!-- CONTROLES -->
-    <div class="controls">
-      <button class="btn-mic" id="micBtn">
-        <svg id="micIcon" viewBox="0 0 24 24">
-          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-        </svg>
+    <!-- VISUALIZADORES EN TIEMPO REAL -->
+    <div class="vis-container">
+      <div class="vis-card"><canvas id="waveCanvas" width="250" height="80"></canvas></div>
+      <div class="vis-card"><canvas id="specCanvas" width="250" height="80"></canvas></div>
+    </div>
+
+    <!-- GRID DE BOTONES CON COLORES SÓLIDOS -->
+    <div class="action-grid">
+      <button class="btn-action btn-mic-main" id="micBtn">
         <span id="btnText">INICIAR AFINADOR</span>
+      </button>
+
+      <button class="btn-action btn-mode" id="modeBtn">
+        <span>MODO: AUTO</span>
+      </button>
+
+      <button class="btn-action btn-tone" id="toneBtn">
+        <span>SONIDO REF.</span>
+      </button>
+
+      <button class="btn-action btn-wave" id="waveTypeBtn">
+        <span>ONDA: SENOIDAL</span>
+      </button>
+
+      <button class="btn-action btn-gate" id="gateBtn">
+        <span>FILTRO: NORMAL</span>
       </button>
     </div>
   </main>
 
   <footer>
-    LeamsiTUNER Pro • Sensibilidad de Alta Precisión • A4 = 440Hz
+    LeamsiTUNER Deluxe • Frecuencia A4 Calibrable • Procesamiento DSP
   </footer>
 
   <script>
-    // 10 Colores Sólidos para la barra de carga circular
     const solidColors = [
       '#FF0055', '#00F0FF', '#00FF88', '#FFB700', '#B026FF',
       '#FF5722', '#0077FF', '#E91E63', '#7C4DFF', '#00E676'
     ];
 
-    // Bucle de animación para la pantalla de carga (Splash Loader)
     const loaderCircle = document.getElementById('loaderCircle');
     const loadingPercent = document.getElementById('loadingPercent');
     const brandRevealText = document.getElementById('brandRevealText');
@@ -565,21 +713,28 @@
 
     window.addEventListener('DOMContentLoaded', runSplashLoader);
 
-    // Motor de Audio y Lógica del Afinador
+    // AUDIO & DSP SYSTEM
     const micBtn = document.getElementById('micBtn');
     const btnText = document.getElementById('btnText');
     const noteDisplay = document.getElementById('noteDisplay');
     const freqDisplay = document.getElementById('freqDisplay');
+    const centsDisplay = document.getElementById('centsDisplay');
     const successBadge = document.getElementById('successBadge');
     const gaugeCard = document.getElementById('gaugeCard');
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
-    
+
+    const arrowLow = document.getElementById('arrowLow');
+    const arrowHigh = document.getElementById('arrowHigh');
+
     const canvas = document.getElementById('gaugeCanvas');
     const ctx = canvas.getContext('2d');
 
-    const spectrumCanvas = document.getElementById('spectrumCanvas');
-    const specCtx = spectrumCanvas.getContext('2d');
+    const waveCanvas = document.getElementById('waveCanvas');
+    const waveCtx = waveCanvas.getContext('2d');
+
+    const specCanvas = document.getElementById('specCanvas');
+    const specCtx = specCanvas.getContext('2d');
 
     let audioCtx = null;
     let analyser = null;
@@ -587,28 +742,67 @@
     let isListening = false;
     let animationFrameId = null;
 
-    const A4 = 440;
+    let customA4 = 440;
+    let isAutoMode = true;
+    let noiseGateThreshold = 0.012;
+    let selectedTargetFreq = null;
+    let activeOscillator = null;
+
+    const waveTypes = ['sine', 'triangle', 'sawtooth', 'square'];
+    const waveTypeNames = ['SENOIDAL', 'TRIANGULAR', 'SERRADA', 'CUADRADA'];
+    let currentWaveIdx = 0;
+
     const NOTE_STRINGS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-    
     let currentCents = 0;
     let targetCents = 0;
 
     function setupCanvasDPI() {
       const dpr = window.devicePixelRatio || 1;
+      
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
 
-      const sRect = spectrumCanvas.getBoundingClientRect();
-      spectrumCanvas.width = sRect.width * dpr;
-      spectrumCanvas.height = sRect.height * dpr;
+      const wRect = waveCanvas.getBoundingClientRect();
+      waveCanvas.width = wRect.width * dpr;
+      waveCanvas.height = wRect.height * dpr;
+      waveCtx.scale(dpr, dpr);
+
+      const sRect = specCanvas.getBoundingClientRect();
+      specCanvas.width = sRect.width * dpr;
+      specCanvas.height = sRect.height * dpr;
       specCtx.scale(dpr, dpr);
     }
     window.addEventListener('resize', setupCanvasDPI);
     setupCanvasDPI();
 
-    // Dibujado del dial con aguja
+    // CALIBRACIÓN A4
+    const a4ValueDisplay = document.getElementById('a4ValueDisplay');
+    document.getElementById('btnA4Down').addEventListener('click', () => {
+      if (customA4 > 432) { customA4--; a4ValueDisplay.innerText = `${customA4} Hz`; }
+    });
+    document.getElementById('btnA4Up').addEventListener('click', () => {
+      if (customA4 < 445) { customA4++; a4ValueDisplay.innerText = `${customA4} Hz`; }
+    });
+
+    // PRESETS DE AFINACIÓN (E, A, D, G, B, E)
+    const tuningPresets = {
+      STD: [82.41, 110.00, 146.83, 196.00, 246.94, 329.63],
+      DROPD: [73.42, 110.00, 146.83, 196.00, 246.94, 329.63],
+      HALF: [77.78, 103.83, 138.59, 185.00, 233.08, 311.13],
+      FULL: [73.42, 98.00, 130.81, 174.61, 220.00, 293.66]
+    };
+
+    document.getElementById('presetSelect').addEventListener('change', (e) => {
+      const freqs = tuningPresets[e.target.value] || tuningPresets.STD;
+      const btns = document.querySelectorAll('.btn-string');
+      btns.forEach((btn, idx) => {
+        btn.dataset.freq = freqs[idx];
+      });
+    });
+
+    // DIBUJADO DEL DIAL
     function drawGauge(cents) {
       const rect = canvas.getBoundingClientRect();
       const width = rect.width;
@@ -622,7 +816,6 @@
       const startAngle = Math.PI * 0.8;
       const endAngle = Math.PI * 2.2;
 
-      // Arco de fondo
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, startAngle, endAngle);
       ctx.lineWidth = 12;
@@ -630,7 +823,6 @@
       ctx.lineCap = 'round';
       ctx.stroke();
 
-      // Zona central de afinación justa (Verde)
       const tunedWidth = 0.08;
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, (Math.PI * 1.5) - tunedWidth, (Math.PI * 1.5) + tunedWidth);
@@ -641,7 +833,6 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Marcas del reloj de afinación
       const totalTicks = 21;
       for (let i = 0; i < totalTicks; i++) {
         const tickCents = -50 + (i * 5);
@@ -665,23 +856,31 @@
         ctx.stroke();
       }
 
-      // Interpolación Suave de Aguja
       currentCents += (targetCents - currentCents) * 0.15;
       const clampedCents = Math.max(-50, Math.min(50, currentCents));
       const needleAngle = Math.PI * 1.5 + (clampedCents * (Math.PI / 180) * 0.9);
 
       let needleColor = '#00f0ff';
       const absCents = Math.abs(currentCents);
+
       if (isListening && noteDisplay.innerText !== '--') {
         if (absCents <= 3) {
           needleColor = '#00ff88';
-        } else if (absCents <= 15) {
-          needleColor = '#ffb700';
-        } else {
+          arrowLow.classList.remove('active-low');
+          arrowHigh.classList.remove('active-high');
+        } else if (currentCents < -3) {
           needleColor = '#ff0055';
+          arrowLow.classList.add('active-low');
+          arrowHigh.classList.remove('active-high');
+        } else {
+          needleColor = '#ffb700';
+          arrowHigh.classList.add('active-high');
+          arrowLow.classList.remove('active-low');
         }
       } else {
         needleColor = '#8b80b2';
+        arrowLow.classList.remove('active-low');
+        arrowHigh.classList.remove('active-high');
       }
 
       ctx.shadowColor = needleColor;
@@ -707,26 +906,43 @@
       ctx.shadowBlur = 0;
     }
 
-    // Visualizador de ondas/espectro en tiempo real
-    function drawSpectrum(freqData) {
-      const sRect = spectrumCanvas.getBoundingClientRect();
-      const w = sRect.width;
-      const h = sRect.height;
+    function drawWaveform(timeData) {
+      const w = waveCanvas.width;
+      const h = waveCanvas.height;
+      waveCtx.clearRect(0, 0, w, h);
+      if (!isListening || !timeData) return;
 
+      waveCtx.beginPath();
+      waveCtx.lineWidth = 2;
+      waveCtx.strokeStyle = '#00f0ff';
+      const sliceWidth = w / timeData.length;
+      let x = 0;
+
+      for (let i = 0; i < timeData.length; i += 4) {
+        const v = timeData[i];
+        const y = (v * (h / 2));
+        if (i === 0) waveCtx.moveTo(x, y);
+        else waveCtx.lineTo(x, y);
+        x += sliceWidth * 4;
+      }
+      waveCtx.stroke();
+    }
+
+    function drawSpectrum(freqData) {
+      const w = specCanvas.width;
+      const h = specCanvas.height;
       specCtx.clearRect(0, 0, w, h);
       if (!isListening || !freqData) return;
 
-      const barWidth = (w / 32);
-      for (let i = 0; i < 32; i++) {
+      const barWidth = w / 20;
+      for (let i = 0; i < 20; i++) {
         const val = freqData[i * 2] / 255;
         const barHeight = val * h;
-
-        specCtx.fillStyle = `rgba(176, 38, 255, ${val + 0.2})`;
+        specCtx.fillStyle = '#b026ff';
         specCtx.fillRect(i * barWidth, h - barHeight, barWidth - 2, barHeight);
       }
     }
 
-    // Algoritmo de Detección de Frecuencia (Autocorrelación YIN)
     function autoCorrelate(buf, sampleRate) {
       const SIZE = buf.length;
       let rms = 0;
@@ -737,7 +953,7 @@
       }
       rms = Math.sqrt(rms / SIZE);
 
-      if (rms < 0.012) return -1;
+      if (rms < noiseGateThreshold) return -1;
 
       let r1 = 0, r2 = SIZE - 1, thres = 0.2;
       for (let i = 0; i < SIZE / 2; i++) {
@@ -777,7 +993,7 @@
     }
 
     function getNoteAndCents(freq) {
-      const noteNum = 12 * (Math.log(freq / A4) / Math.log(2));
+      const noteNum = 12 * (Math.log(freq / customA4) / Math.log(2));
       const midiNote = Math.round(noteNum) + 69;
       const noteName = NOTE_STRINGS[midiNote % 12];
       const cents = Math.floor((noteNum - Math.round(noteNum)) * 100);
@@ -792,6 +1008,8 @@
 
       const freqData = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteFrequencyData(freqData);
+
+      drawWaveform(buf);
       drawSpectrum(freqData);
 
       const pitch = autoCorrelate(buf, audioCtx.sampleRate);
@@ -801,6 +1019,7 @@
         
         noteDisplay.innerText = noteName;
         freqDisplay.innerText = `${pitch.toFixed(1)} Hz`;
+        centsDisplay.innerText = `${cents > 0 ? '+' : ''}${cents} Cents`;
         targetCents = cents;
 
         if (Math.abs(cents) <= 3) {
@@ -841,14 +1060,19 @@
         gaugeCard.classList.remove('tuned');
         successBadge.classList.remove('show');
         freqDisplay.innerText = '0.0 Hz';
+        centsDisplay.innerText = '0 Cents';
         targetCents = 0;
         drawGauge(0);
+        drawWaveform(null);
         drawSpectrum(null);
 
       } else {
         try {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          
+          if (audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+          }
+
           micStream = await navigator.mediaDevices.getUserMedia({
             audio: {
               echoCancellation: false,
@@ -877,6 +1101,63 @@
         }
       }
     }
+
+    // CONTROLES DE ACCIÓN
+    document.getElementById('modeBtn').addEventListener('click', (e) => {
+      isAutoMode = !isAutoMode;
+      e.currentTarget.querySelector('span').innerText = isAutoMode ? 'MODO: AUTO' : 'MODO: MANUAL';
+    });
+
+    document.getElementById('waveTypeBtn').addEventListener('click', (e) => {
+      currentWaveIdx = (currentWaveIdx + 1) % waveTypes.length;
+      e.currentTarget.querySelector('span').innerText = `ONDA: ${waveTypeNames[currentWaveIdx]}`;
+      if (activeOscillator) activeOscillator.type = waveTypes[currentWaveIdx];
+    });
+
+    document.getElementById('gateBtn').addEventListener('click', (e) => {
+      if (noiseGateThreshold === 0.012) {
+        noiseGateThreshold = 0.025;
+        e.currentTarget.querySelector('span').innerText = 'FILTRO: ALTO';
+      } else {
+        noiseGateThreshold = 0.012;
+        e.currentTarget.querySelector('span').innerText = 'FILTRO: NORMAL';
+      }
+    });
+
+    const toneBtn = document.getElementById('toneBtn');
+    toneBtn.addEventListener('click', async () => {
+      if (activeOscillator) {
+        activeOscillator.stop();
+        activeOscillator = null;
+        toneBtn.querySelector('span').innerText = 'SONIDO REF.';
+      } else {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+        activeOscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        activeOscillator.type = waveTypes[currentWaveIdx];
+        activeOscillator.frequency.value = selectedTargetFreq || customA4;
+        
+        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        activeOscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        activeOscillator.start();
+        toneBtn.querySelector('span').innerText = 'DETENER TONO';
+      }
+    });
+
+    const stringButtons = document.querySelectorAll('.btn-string');
+    stringButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        stringButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedTargetFreq = parseFloat(btn.dataset.freq);
+        if (activeOscillator) activeOscillator.frequency.value = selectedTargetFreq;
+      });
+    });
 
     micBtn.addEventListener('click', toggleMicrophone);
     drawGauge(0);
